@@ -48,3 +48,22 @@
       (lazy-seq (cons next-dig
                       (digits (/ (- n next-dig) 10)))))))
 
+(defn binary-digits[n]
+  (if (not (zero? n))
+    (let [next-dig (rem n 2)]
+      (lazy-seq (cons next-dig
+                      (binary-digits (/ (- n next-dig) 2)))))))
+
+(defn gen-fibonacci []
+  (letfn [(fib-gen [x]
+                   [(+ (first x) (second x)) (first x)])]
+    (map first (iterate fib-gen [1 0]))))
+
+(defn palindrome-n? [n]
+  (let [digs (digits n)]
+    (= digs (reverse digs))))
+
+(defn binary-palindrome-n? [n]
+  (let [digs (binary-digits n)]
+    (= digs (reverse digs))))
+

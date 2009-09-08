@@ -15,7 +15,7 @@
   (count (proper-factors n)))
 
 (defn solve []
-  (some #(if (> (first %) 500) %)
+  (some #(if (> (first %) 2000) %)
         (map #(list (num-divisors %) %) (gen-triangles))))
 
 

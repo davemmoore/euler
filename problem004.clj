@@ -8,10 +8,6 @@
 ;; Find the largest palindrome made from the product of two 3-digit
 ;; numbers.
 
-(defn palindrome-n? [n]
-  (let [digs (digits n)]
-    (= digs (reverse digs))))
-
 (defn max-palindrome-under [n msf]
   (let [pal (loop [m n]
               (if (and (>= m 100) (> (* m n) msf))
