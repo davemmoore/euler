@@ -37,10 +37,15 @@
                 (all-permutes (next l))))
     '(())))
 
+;; A bit hack-tastic, in that we know that the first element after distinct will be n
 (defn proper-factors [n]
-  (distinct (let [factors (prime-factors n)
-                  to-div (fn [l] (reduce #(* %1 %2) 1 l))]
-              (map to-div (all-permutes factors)))))
+  (if (zero? n)
+    '()
+    (let [full-list (distinct (let [factors (prime-factors n)
+                                    to-div (fn [l] (reduce #(* %1 %2) 1 l))]
+                                (map to-div (all-permutes factors))))]
+      (assert (== (first full-list) n))
+      (rest full-list))))
 
 (defn digits[n]
   (if (not (zero? n))
