@@ -1,0 +1,1 @@
+(require euler.problem001)
