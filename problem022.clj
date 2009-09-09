@@ -1,4 +1,4 @@
-(ns euler.problem022)
+(ns euler.problem022 (:use euler.utils))
 
 ;; Using names.txt (right click and 'Save Link/Target As...'), a 46K
 ;; text file containing over five-thousand first names, begin by
@@ -14,19 +14,13 @@
 
 (def problem022-filename "d:/projects/euler/data/names_problem022.txt")
 
-(defn- strip-quotes [str]
-  (subs str 1 (dec (count str))))
-
 (defn- name-score [pair]
-  (let [name (first pair)
-        pos  (fnext pair)
-        name-sum (reduce + (map #(- (int %) (int \A) -1) name))]
-    (if (== pos 938)
-      (println name pos name-sum (* pos name-sum)))
+  (let [name     (first pair)
+        pos      (fnext pair)
+        name-sum (word-score name)]
     (* pos name-sum)))
 
 (defn solve []
-  (let [contents (slurp problem022-filename)
-        names (sort (.split contents ","))
-        pairs (map #(list (strip-quotes %1) %2) names (iterate inc 1))]
+  (let [names (sort (slurp-euler-words problem022-filename))
+        pairs (map #(list %1 %2) names (iterate inc 1))]
     (reduce + (map name-score pairs))))

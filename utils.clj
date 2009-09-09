@@ -1,5 +1,14 @@
 (ns euler.utils)
 
+(defn word-score [name]
+  (reduce + (map #(- (int %) (int \A) -1) name)))
+
+(defn- strip-quotes [str] (subs str 1 (dec (count str))))
+
+;; format "STRING","STRING","STRING"
+(defn slurp-euler-words [filename]
+  (map strip-quotes (.split (slurp filename) ",")))
+
 ;; todo: understand this.
 (defn lazy-primes []
   (letfn [(enqueue [sieve n factor]
