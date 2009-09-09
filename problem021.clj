@@ -12,7 +12,7 @@
 ;; Evaluate the sum of all the amicable numbers under 10000.
 
 (defn- d_of_n [n]
-  (reduce + (proper-factors n)))
+  (reduce + (proper-divisors n)))
 
 (defn solve []
   (let [d (memoize d_of_n)

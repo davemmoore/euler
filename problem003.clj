@@ -5,4 +5,4 @@
 ;; What is the largest prime factor of the number 600851475143?
 
 (defn solve []
-  (reduce max (factors 600851475143 (lazy-primes))))
+  (reduce max (prime-factors 600851475143)))

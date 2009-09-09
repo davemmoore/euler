@@ -1,5 +1,9 @@
 (ns euler.utils)
 
+(defn triangle-numbers []
+  (letfn [(tn [n] (/ (* n (inc n)) 2))]
+    (map tn (iterate inc 1))))
+
 (defn word-score [name]
   (reduce + (map #(- (int %) (int \A) -1) name)))
 
@@ -29,32 +33,40 @@
                                                       (inc candidate))))))]
     (lazy-seq (next-primes {} 2))))
 
-(defn factors [n divisors]
-  (if (> n 1)
-    (let [test-div (first divisors)]
-      (if (zero? (rem n test-div))
-        (lazy-seq (cons test-div (factors (/ n test-div) divisors)))
-        (factors n (next divisors))))))
-
-(defn prime-factors [n]
-  (factors n (lazy-primes)))
-
 (defn all-permutes [l]
-  (if (seq? l)
+  (if (and (seq? l) (not (empty? l)))
     (let [val (first l)]
       (lazy-cat (map (partial cons val) (all-permutes (next l)))
                 (all-permutes (next l))))
     '(())))
 
+
+;; todo: make factors (recur) rather than recurse
+(def prime-factors
+     (letfn [(factors1 [n divisors sofar]
+                      (if (> n 1)
+                        (let [test-div (first divisors)]
+                          (if (zero? (rem n test-div))
+                            (recur (/ n test-div) divisors (cons test-div sofar))
+                            (recur n (next divisors) sofar)))
+                        sofar))]
+       (fn this
+         ([n] (factors1 n (lazy-primes) '()))
+         ([n primes] (factors1 n primes '())))))
+
 ;; A bit hack-tastic, in that we know that the first element after distinct will be n
-(defn proper-factors [n]
-  (if (zero? n)
-    '()
-    (let [full-list (distinct (let [factors (prime-factors n)
-                                    to-div (fn [l] (reduce #(* %1 %2) 1 l))]
-                                (map to-div (all-permutes factors))))]
-      (assert (== (first full-list) n))
-      (rest full-list))))
+(def proper-divisors
+     (letfn [(propers [n primes]
+                      (if (zero? n)
+                        '()
+                        (let [full-list (distinct (let [factors (prime-factors n primes)
+                                                        to-div (fn [l] (reduce #(* %1 %2) 1 l))]
+                                                    (map to-div (all-permutes factors))))]
+                          (assert (== (first full-list) n))
+                          (next full-list))))]
+       (fn this
+         ([n]        (propers n (lazy-primes)))
+         ([n primes] (propers n primes)))))
 
 (defn digits[n]
   (if (not (zero? n))
