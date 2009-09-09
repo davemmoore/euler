@@ -44,9 +44,8 @@
     '(())))
 
 
-;; todo: make factors (recur) rather than recurse
 (def prime-factors
-     (letfn [(factors1 [n divisors sofar]
+     (letfn [(factors [n divisors sofar]
                       (if (> n 1)
                         (let [test-div (first divisors)]
                           (if (zero? (rem n test-div))
@@ -54,8 +53,8 @@
                             (recur n (next divisors) sofar)))
                         sofar))]
        (fn this
-         ([n] (factors1 n (lazy-primes) '()))
-         ([n primes] (factors1 n primes '())))))
+         ([n] (factors n (lazy-primes) '()))
+         ([n primes] (factors n primes '())))))
 
 ;; A bit hack-tastic, in that we know that the first element after distinct will be n
 (def proper-divisors
@@ -75,7 +74,7 @@
   (if (not (zero? n))
     (let [next-dig (rem n 10)]
       (lazy-seq (cons next-dig
-                      (digits (/ (- n next-dig) 10)))))))
+                      (digits (quot n 10)))))))
 
 (defn binary-digits[n]
   (if (not (zero? n))

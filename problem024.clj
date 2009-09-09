@@ -16,7 +16,7 @@
     (if (== size 1)
       l
       (let [fact  (factorial (dec size))
-            sel   (int (/ n fact))
+            sel   (quot n fact)
             next  (- n (* sel fact))
             val   (nth l sel)
             rem   (lazy-cat (take sel l) (drop (inc sel) l))]
