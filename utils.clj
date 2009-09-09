@@ -13,6 +13,9 @@
 (defn slurp-euler-words [filename]
   (map strip-quotes (.split (slurp filename) ",")))
 
+(defn factorial [n]
+  (reduce * (range 1 (inc n))))
+
 ;; todo: understand this.
 (defn lazy-primes []
   (letfn [(enqueue [sieve n factor]

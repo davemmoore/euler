@@ -4,8 +4,5 @@
 ;;
 ;; Find the sum of the digits in the number 100!
 
-(defn- factorial [n]
-  (apply * (range 1 (inc n))))
-
 (defn solve []
   (apply + (digits (factorial 100))))
