@@ -36,6 +36,17 @@
                                                       (inc candidate))))))]
     (lazy-seq (next-primes {} 2))))
 
+(defn nth-permute [l n]
+  (let [size (count l)]
+    (if (== size 1)
+      l
+      (let [fact  (factorial (dec size))
+            sel   (quot n fact)
+            next  (- n (* sel fact))
+            val   (nth l sel)
+            rem   (lazy-cat (take sel l) (drop (inc sel) l))]
+        (cons val (nth-permute rem next))))))
+
 (defn all-permutes [l]
   (if (and (seq? l) (not (empty? l)))
     (let [val (first l)]
